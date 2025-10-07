@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Heart Animation</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: black;
+      overflow: hidden;
+    }
+    canvas {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="canvas"></canvas>
+  <script>
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    class Vector {
+      constructor(x, y) {
+        this.x = x;
+        this.y = y;
+      }
+
+      add(v) {
+        return new Vector(this.x + v.x, this.y + v.y);
+      }
+
+      subtract(v) {
+        return new Vector(this.x - v.x, this.y - v.y);
+      }
+
+      scale(s) {
+        return new Vector(this.x * s, this.y * s);
+      }
+    }
+
+    const origin = new Vector(canvas.width / 2, canvas.height / 2);
+    const mouse = new Vector(canvas.width / 2, canvas.height / 2);
+    const particles = [];
+
+    window.addEventListener("mousemove", (e) => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+    });
+
+    function polar(rad, time) {
+      rad += Math.sin(time / 100);
+      const x = 16 * Math.pow(Math.sin(rad), 3);
+      const y =
+        13 * Math.cos(rad) -
+        5 * Math.cos(2 * rad) -
+        2 * Math.cos(3 * rad) -
+        Math.cos(4 * rad);
+
+      const scale = (Math.sin(time / 10) + 3) * 4;
+      return new Vector(x * scale, -y * scale).add(
+        origin.add(mouse.subtract(origin).scale(0.5))
+      );
+    }
+
+    function animate(time) {
+      requestAnimationFrame(animate);
+      ctx.fillStyle = "rgba(0, 0, 0, 0.1)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      for (let i = 0; i < 100; i++) {
+        const rad = (Math.PI * 2 * i) / 100;
+        const pos = polar(rad, time);
+        particles.push({ x: pos.x, y: pos.y, alpha: 1 });
+      }
+
+      for (let i = particles.length - 1; i >= 0; i--) {
+        const p = particles[i];
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 1.5, 0, Math.PI * 2);
+        ctx.fillStyle = rgba(255, 0, 0, ${p.alpha});
+        ctx.fill();
+        p.alpha -= 0.01;
+        if (p.alpha <= 0) {
+          particles.splice(i, 1);
+        }
+      }
+    }
+
+    animate(0);
+  </script>
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Heart Animation</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: black;
+      overflow: hidden;
+    }
+    canvas {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="canvas"></canvas>
+  <script>
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    class Vector {
+      constructor(x, y) {
+        this.x = x;
+        this.y = y;
+      }
+
+      add(v) {
+        return new Vector(this.x + v.x, this.y + v.y);
+      }
+
+      subtract(v) {
+        return new Vector(this.x - v.x, this.y - v.y);
+      }
+
+      scale(s) {
+        return new Vector(this.x * s, this.y * s);
+      }
+    }
+
+    const origin = new Vector(canvas.width / 2, canvas.height / 2);
+    const mouse = new Vector(canvas.width / 2, canvas.height / 2);
+    const particles = [];
+
+    window.addEventListener("mousemove", (e) => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+    });
+
+    function polar(rad, time) {
+      rad += Math.sin(time / 100);
+      const x = 16 * Math.pow(Math.sin(rad), 3);
+      const y =
+        13 * Math.cos(rad) -
+        5 * Math.cos(2 * rad) -
+        2 * Math.cos(3 * rad) -
+        Math.cos(4 * rad);
+
+      const scale = (Math.sin(time / 10) + 3) * 4;
+      return new Vector(x * scale, -y * scale).add(
+        origin.add(mouse.subtract(origin).scale(0.5))
+      );
+    }
+
+    function animate(time) {
+      requestAnimationFrame(animate);
+      ctx.fillStyle = "rgba(0, 0, 0, 0.1)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      for (let i = 0; i < 100; i++) {
+        const rad = (Math.PI * 2 * i) / 100;
+        const pos = polar(rad, time);
+        particles.push({ x: pos.x, y: pos.y, alpha: 1 });
+      }
+
+      for (let i = particles.length - 1; i >= 0; i--) {
+        const p = particles[i];
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 1.5, 0, Math.PI * 2);
+        ctx.fillStyle = rgba(255, 0, 0, ${p.alpha});
+        ctx.fill();
+        p.alpha -= 0.01;
+        if (p.alpha <= 0) {
+          particles.splice(i, 1);
+        }
+      }
+    }
+
+    animate(0);
+  </script>
+</body>
+</html>
